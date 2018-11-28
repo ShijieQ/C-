@@ -1,0 +1,23 @@
+Private Sub Command1_Click()
+Dim s As Long, n As Integer, i As Integer
+n = Val(Text1.Text)
+s = 1
+i = 1
+Do
+    s = s * i
+    i = i + 1
+Loop While i < n
+Print s
+End Sub
+
+Private Sub Command1_Click()
+Dim s As Long, n As Integer, i As Integer
+n = Val(Text1.Text)
+s = 1
+i = 1
+While i <= n
+    s = s * i
+    i = i + 1
+Wend
+Print s
+End Sub

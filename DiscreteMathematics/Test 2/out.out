@@ -1,0 +1,13 @@
+Please input the number of elements: Please input the elements: 
+Please input the number of relations: 
+
+关系矩阵为： 
+* 2 5 7 
+2 1 1 1 
+5 0 1 1 
+7 0 0 0 
+该集合不具有自反性
+该集合不具有反自反性
+该集合不具有对称性
+该集合具有反对称性
+该集合具有传递性

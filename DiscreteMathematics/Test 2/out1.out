@@ -1,0 +1,11 @@
+Please input the number of elements: Please input the number of relations: 
+
+关系矩阵为： 
+* 1 2 
+1 0 1 
+2 0 1 
+该集合不具有自反性
+该集合不具有反自反性
+该集合不具有对称性
+该集合具有反对称性
+该集合具有传递性
