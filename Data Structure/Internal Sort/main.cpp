@@ -123,10 +123,74 @@ long QuickSort(int start, int ending){
     return end - begin;
 }
 
+Entry temp[MaxSize];
+long MergeSort(){
+    clock_t begin = clock();
+    int low, n1, n2, size = 1;
+    while(size < l.n){
+        int k = 0;
+        low = 0;
+        while(low + size <= l.n){
+            n1 = size;
+            if(low + size*2 < l.n){
+                n2 = size;
+            }
+            else{
+                n2 = l.n - low - size;
+            }
+
+            int i = low, j = low + n1;
+            while(i <= low + n1 - 1 && j <= low + n1 + n2 - 1){
+                if(l.D[i].key <= l.D[j].key){
+                    temp[k++] = l.D[i++];
+                }
+                else{
+                    temp[k++] = l.D[j++];
+                }
+            }
+            while(i <= low + n1 - 1){
+                temp[k++] = l.D[i++];
+            }
+            while(j <= low + n1 + n2 - 1){
+                temp[k++] = l.D[j++];
+            }
+            low += n1 + n2;
+        }
+        for(int i = 0; i < l.n; i++){
+            l.D[i] = temp[i];
+        }
+        size *= 2;   
+    }
+    clock_t end = clock();
+    return end - begin;
+}
+
+void AdjustDown(Entry heap[], int l, int r){
+    KeyType temp = heap[l].key;
+    for(int j = 2*l; j <= r; j *= 2){
+        if(j < m && heap[j].key < heap[j+1].key){
+            j++;
+        }
+        if(temp > heap[j].key){
+            break;
+        }
+        heap[l] = heap[j];
+        l = j;
+    }
+    heap[l] = temp;
+}
+
+long HeapSort(){
+    clock_t begin = clock();
+    for(int i = )
+    clock_t end = clock();
+    return end - begin;
+}
+
 int main(){
-    Init(10000);
+    Init(1005);
     freopen("main.out", "w", stdout);
-    QuickSort(0, 9999);
+    MergeSort();
     Result();
     return 0;
 }

@@ -48,21 +48,36 @@ void OutputMatrix(){
     }
 }
 
+void nodeDfs(int k){
+    vis[k] = 1;
+    for(int i = 1; i <= n; i++){
+        if(mp[k][i] && !vis[i]){
+            nodeDfs(i);
+        }
+    }
+}
+
+bool checkConnect(){
+    nodeDfs(n);
+    for(int i = 1; i <= n; i++){
+        if(!vis[i]){
+            return false;
+        }
+    }
+    return true;
+}
+
 int checkEulerPath(){
+    if(!checkConnect()){
+        return 0;
+    }
     int oddnode = 0;
     for(int i = 1; i <= n; i++){
         int degree = 0;
-        int conected = 0;
         for(int j = 1; j <= n; j++){
             if(mp[i][j]){
                 degree++;
             }
-            else {
-                conected++;
-            }
-        }
-        if(conected == n){
-            return false;
         }
         if(degree & 1){
             fir = i;
@@ -74,9 +89,6 @@ int checkEulerPath(){
     }
     else if(oddnode == 2){
         return -1;
-    }
-    else {
-        return 0;
     }
 }
 
