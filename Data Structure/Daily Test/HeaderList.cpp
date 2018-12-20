@@ -60,18 +60,14 @@ struct listNode *ListInsertSort(struct listNode *h){
             preq = q;
             q = q -> next;
         }
-
         //无序链表遍历
         p = p -> next;
-
         //节点插入到L之前或preq和q之间
         if (q == h)
             h = temp;
         else
             preq -> next = temp;
-
         temp -> next = q;
-
         //返回排序后链表首指针
         return h;
     }

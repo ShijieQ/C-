@@ -138,7 +138,6 @@ long MergeSort(){
             else{
                 n2 = l.n - low - size;
             }
-
             int i = low, j = low + n1;
             while(i <= low + n1 - 1 && j <= low + n1 + n2 - 1){
                 if(l.D[i].key <= l.D[j].key){
