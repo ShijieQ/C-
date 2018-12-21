@@ -43,8 +43,12 @@ void Reversion(){
 void Result(){
     int length = l.n;
     for(int i = 0; i < length; i++){
-        cout<<l.D[i].key<<endl;
+        cout<<l.D[i].key<<"  ";
+        if((i+1) % 10 == 0){
+            cout<<endl;
+        }
     }
+    cout<<endl;
     return ;
 }
 
@@ -164,33 +168,67 @@ long MergeSort(){
     return end - begin;
 }
 
-void AdjustDown(Entry heap[], int l, int r){
-    KeyType temp = heap[l].key;
-    for(int j = 2*l; j <= r; j *= 2){
-        if(j < m && heap[j].key < heap[j+1].key){
+void AdjustDown(int b, int r){
+    Entry temp = l.D[b];
+    for(int j = 2*b+1; j <= r; j = j*2+1){
+        if(j < r && l.D[j].key < l.D[j+1].key){
             j++;
         }
-        if(temp > heap[j].key){
+        if(temp.key > l.D[j].key){
             break;
         }
-        heap[l] = heap[j];
-        l = j;
+        l.D[b] = l.D[j];
+        b = j;
     }
-    heap[l] = temp;
+    l.D[b] = temp;
 }
 
 long HeapSort(){
     clock_t begin = clock();
-    for(int i = )
+    for(int i = (l.n-2)/2; i >= 0; i--){
+        AdjustDown(i, l.n-1);
+    }
+    for(int i = l.n-1; i >= 0; i--){
+        swap(l.D[0], l.D[i]);
+        AdjustDown(0, i-1);
+    }
     clock_t end = clock();
     return end - begin;
 }
 
 int main(){
-    Init(1005);
+    clock_t be = clock();
+    Init(5000);
+    clock_t ed = clock();
     freopen("main.out", "w", stdout);
-    MergeSort();
+    cout<<"After Init is :"<<endl;
+    cout<<"time used : "<<ed - be<<"ms"<<endl;
+    cout<<"Initial data is :"<<endl;
     Result();
+    cout<<"After SelectSort is :"<<endl;
+    cout<<"time used : "<<SelectSort()<<"ms"<<endl;
+    Result();
+    Reversion();
+    cout<<"After InsertSort is :"<<endl;
+    cout<<"time used : "<<InsertSort()<<"ms"<<endl;
+    Result();
+    Reversion();
+    cout<<"After BubbleSort is :"<<endl;
+    cout<<"time used : "<<BubbleSort()<<"ms"<<endl;
+    Result();
+    Reversion();
+    cout<<"After QuickSort is :"<<endl;
+    cout<<"time used : "<<QuickSort(0, l.n-1)<<"ms"<<endl;
+    Result();
+    Reversion();
+    cout<<"After MergeSort is :"<<endl;
+    cout<<"time used : "<<MergeSort()<<"ms"<<endl;
+    Result();
+    Reversion();
+    cout<<"After HeapSort is :"<<endl;
+    cout<<"time used : "<<HeapSort()<<"ms"<<endl;
+    Result();
+    Reversion();
     return 0;
 }
 

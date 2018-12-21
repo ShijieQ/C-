@@ -1,177 +1,283 @@
-#include<cstdio>
-#include<cstring>
-#include<cmath>
+#include<stdio.h>
 #include<iostream>
-#include<algorithm>
-#include<queue>
-using namespace std;
-
-#define ERROR 0
-#define OK 1
-#define Overflow 2
-#define Underflow 3
-#define NotPresent 4
-#define Duplicate 5
-
-const int maxn = 2e5+10;
-
-typedef int Status;
-typedef int ElemType;
-typedef struct ENode{
-    int adjVex;             //任意顶点u相邻接的顶点
-    ElemType w;             //边的权值
-    struct ENode* nextArc;  //指向下一个边结点
-}ENode;
-typedef struct{
-    int n;                  //图的当前顶点数
-    int e;                  //图的当前边数
-    ENode **a;              //指向一维数组
-}LGraph;
-
-Status Init(LGraph *lg,int nSize){
-    int i;
-    lg->n = nSize;
-    lg->e = 0;
-    lg->a = (ENode**)malloc(nSize*sizeof(ENode*));
-    if(!lg->a)
-        return ERROR;
-    else{
-        for(i = 0;i <lg->n;i++) lg->a[i] = NULL;
-        return OK;
-    }
-}
-
-void Destroy(LGraph *lg){
-    int i;
-    ENode *p,*q;
-    for(i = 0;i <lg->n;i++){
-        p = lg->a[i];
-        q = p;
-        while(p){
-            p = p->nextArc;
-            free(q);
-            q = p;
-        }
-    }
-    free(lg->a);
-}
-
-Status Exist(LGraph *lg,int u,int v){
-    ENode *p;
-    if(u < 0||v < 0||u >lg->n-1||v>lg->n-1||u==v)
-        return ERROR;
-    p = lg->a[u];
-    while(p&&p->adjVex!=v) p = p->nextArc;
-    if(!p) return ERROR;
-    else return OK;
-}
-
-Status Insert(LGraph *lg,int u,int v,ElemType w)
+#include<stdlib.h>
+#include<time.h>
+typedef int KeyType;
+typedef int DataType;
+typedef struct entry
 {
-    ENode* p;
-    if(u < 0||v < 0||u > lg->n-1||v > lg->n-1||u==v) return ERROR;
-    if(Exist(lg,u,v)) return Duplicate;
-    p = (ENode *)malloc(sizeof(ENode));
-    p->adjVex = v;
-    p->w = w;
-    p->nextArc = lg->a[u];
-    lg->a[u] = p;
-    lg->e++;
-    return OK;
-}
-
-Status Remove(LGraph *lg,int u,int v){
-    ENode *p,*q;
-    if(u < 0||v < 0||u >lg->n-1||v > lg->n-1||u==v)
-        return ERROR;
-    p = lg->a[u];q = NULL;
-    while(p&&p->adjVex != v){
-        q = p;
-        p = p->nextArc;
-    }
-    if(!p) return NotPresent;
-    if(q) q->nextArc = p->nextArc;
-    else lg->a[u] = p->nextArc;
-    free(p);
-    lg->e--;
-    return OK;
-}
-
-int Choose(int* d, int* s,int n)   //选出最小的d[i], i∈V-S
+	KeyType key;
+	DataType data;
+}Entry;
+typedef struct list
 {
-    int i,minpos;
-    ElemType min;
-    min=maxn;
-    minpos=-1;
-    for (i=1;i<n;i++)
-        if (d[i]<min &&!s[i]){
-            min=d[i];
-            minpos=i;
-        }
-    return minpos; //返回下标位置
-}
+	int n;
+	Entry D[100];
+}List;
 
-Status Dijkstra(int v, ElemType* d, int* path, LGraph *g)
+int FindMin(List list, int startIndex)  //简单选择排序
 {
-    int i,k,w;
-    int * s;
-    if (v<0||v>g->n-1)     return ERROR;
-    s=(int *)malloc(sizeof(int) * g->n);
-    for (i=0;i<g->n;i++){
-        s[i]=0;     //初始化
-        ENode *p = g->a[v];
-        if(!p){
-            continue;
-        }        
-        ENode *q = p->nextArc;
-        while(q && q->adjVex != i){
-            d[i] = q->w;
-            q = q->nextArc;
-        }
-        if (i!=v && d[i] < maxn)
-            path[i]=v;
-        else
-            path[i]=-1;
-    }
-    s[v]=1; d[v]=0;   //顶点v 为源点
-    for (i=1;i<g->n-1;i++) {
-        k=Choose(d, s, g->n);
-        s[k]=1;   //k 加入s 中
-        printf("%d ",k);
-        for (w=0; w<g->n; w++)    { //更新d 和path
-            ENode *p = g->a[k];
-            if(!p){
-                continue;
-            }
-            ENode *q = p->nextArc;
-            while(q && q->adjVex != w){
-                if (!s[w] && d[k]+q->w < d[w]) {
-                    d[w]=d[k]+q->w;
-                    path[w]=k;
-                }
-                q = q->nextArc;
-            }
-        }
-    }
-    for (i=0;i<g->n;i++)
-        printf("%d", d[i]);
-    return OK;
+	int i, minIndex = startIndex;
+	for (i = startIndex + 1; i < list.n; i++)
+	{
+		if (list.D[i].key < list.D[minIndex].key)
+			minIndex = i;
+	}
+	return minIndex;
+}
+void Swap(Entry* D, int i, int j)
+{
+	if (i == j)return;
+	Entry temp = *(D + i);
+	*(D + i) = *(D + j);
+	*(D + j) = temp;
+}
+void SelectSort(List* list) //简单选择排序
+{
+	int minIndex, startIndex = 0;
+	while (startIndex < list->n - 1)
+	{
+		minIndex = FindMin(*list, startIndex);
+		Swap(list->D, startIndex, minIndex);
+		startIndex++;
+	}
 }
 
-int main(){
-    LGraph lg;
-    int n,e;
-    cout << "输入图的顶点数、边数:"<<endl;
-    cin >> n;
-    cin >> e;
-    int d[maxn],path[maxn];
-    Init(&lg, n);
-    cout << "输入各边及权值：" << endl;
-    for(int i = 0;i < e;i++){
-        int u,v,w;
-        cin >> u >> v >> w;
-        Insert(&lg,u,v,w);
-        }
-    Dijkstra(0, d, path, &lg);
-    return 0;
+void InsertSort(List *list) //直接插入排序
+{
+	int i, j;
+	for (i = 1; i < list->n; i++)
+	{
+		Entry insertItem = list->D[i];
+		for (j = i - 1; j >= 0; j--)
+		{
+			if (insertItem.key < list->D[j].key)
+				list->D[j + 1] = list->D[j];
+			else break;
+		}
+		list->D[j + 1] = insertItem;
+	}
+}
+
+void BubbleSort(List* list, int n) //冒泡排序,n为待排序的个数
+{
+	int i, j;
+	bool isSwap = false;
+	for (i = n - 1; i > 0; i--)
+	{
+		for (j = 0; j < i; j++)
+		{
+			if (list->D[j].key > list->D[j + 1].key)
+			{
+				Swap(list->D, j, j + 1);
+				isSwap = true;
+			}
+		}
+		if (!isSwap) break;
+	}
+}
+
+
+
+int Partition(List* list, int low, int high)
+{
+	int i = low, j = high + 1;
+	Entry pivot = list->D[low];
+	do
+	{
+		do i++; while (list->D[i].key < pivot.key); //i前进
+		do j--; while (list->D[j].key > pivot.key); //j前进
+		if (i < j) Swap(list->D, i, j);
+	} while (i < j);
+	Swap(list->D, low, j);
+	return j;
+}
+void QuickSort(List* list, int low, int high) //快速排序算法
+{
+	int k;
+	if (low < high)
+	{
+		k = Partition(list, low, high);
+		QuickSort(list, low, k - 1);
+		QuickSort(list, k + 1, high);
+	}
+}
+void QuickSort(List *list)  //快速排序的调用函数
+{
+	QuickSort(list, 0, list->n - 1);
+}
+
+
+Entry temp[100];
+long MergeSort(List* l)    //两路合并排序
+{
+	int size = 1, n1, n2;
+	while (size < l->n) 
+	{
+		int k = 0;
+		int low = 0;
+		while (low + size <= l->n) 
+		{
+			n1 = size;
+			if (low + size * 2 < l->n) 
+			{
+				n2 = size;
+			}
+			else 
+			{
+				n2 = l->n - low - size;
+			}
+
+			int i = low, j = low + n1;
+			while (i <= low + n1 - 1 && j <= low + n1 + n2 - 1) 
+			{
+				if (l->D[i].key <= l->D[j].key) 
+				{
+					temp[k++] = l->D[i++];
+				}
+				else 
+				{
+					temp[k++] = l->D[j++];
+				}
+			}
+			while (i <= low + n1 - 1) 
+			{
+				temp[k++] = l->D[i++];
+			}
+			while (j <= low + n1 + n2 - 1) 
+			{
+				temp[k++] = l->D[j++];
+			}
+			low += n1 + n2;
+		}
+		for (int i = 0; i < l->n; i++) 
+		{
+			l->D[i] = temp[i];
+		}
+		size *= 2;
+	}
+	return 0;
+}
+
+
+
+typedef struct maxheap  
+{
+	int n, MaxHeap;
+	Entry D[100];
+}MaxHeap;
+void AdjustDown(List *list, int r, int j)
+{
+	int child = 2 * r + 1;
+	Entry temp = list->D[r];
+	while (child <= j) 
+	{
+		if ((child < j) && (list->D[child].key < list->D[child + 1].key)) 		         
+			child++;
+		if (temp.key >= list->D[child].key) 
+			break;
+		list->D[(child - 1) / 2] = list->D[child];
+		child = 2 * child + 1;
+	}
+	list->D[(child - 1) / 2] = temp;
+}
+void HeapSort(List *list)   //堆排序
+{
+	for (int i = (list->n - 2) / 2; i > -1; i--)
+		AdjustDown(list, i, list->n - 1);
+	for (int i = list->n - 1; i > 0; i--) 
+	{
+		Swap(list->D, 0, i);
+		AdjustDown(list, 0, i - 1);
+	}
+}
+
+
+
+void Rand(List *list,int a[])  /*产生100以内的随机整数*/
+{
+	for (int i = 0; i < 100; i++) 
+	{
+		int b = rand() % 100;
+		list->D[i].key = b;
+		list->D[i].data = b;
+		a[i] = b;
+		printf("%d\t", list->D[i].key);
+		list->n++;
+	}
+}
+
+void RepeatRand(List *list,int *a)  /*复制100以内的随机整数*/
+{
+	for (int i = 0; i < 100; i++)
+	{
+		list->D[i].key = a[i];
+		list->D[i].data = a[i];
+	}
+}
+
+int main()
+{
+	List L1;
+	L1.n = 0;
+	int a[100];
+	int n1;
+	
+	Rand(&L1,a); /*产生100以内的随机整数*/
+	
+	SelectSort(&L1);      //简单选择排序
+	printf("\n\n\n简单选择排序\n");
+	for (int i = 0; i < 100; i++)
+		printf("%d\t", L1.D[i].data);
+
+	printf("\n\n\n重新复制值：\n");
+	RepeatRand(&L1,a);
+	for (int i = 0; i < 100; i++)
+		printf("%d\t", a[i]);
+	printf("\n\n\n直接插入排序:\n");
+	InsertSort(&L1);      //直接插入排序
+	for (int i = 0; i < 100; i++)
+		printf("%d\t", L1.D[i].data);	
+
+	printf("\n\n\n重新复制值：\n");
+	RepeatRand(&L1, a);
+	for (int i = 0; i < 100; i++)
+		printf("%d\t", a[i]);
+	BubbleSort(&L1,100);  //冒泡排序
+	printf("\n\n\n冒泡排序：\n");
+	for (int i = 0; i < 100; i++)
+		printf("%d\t", L1.D[i].data);
+	
+	printf("\n\n\n重新复制值：\n");
+	RepeatRand(&L1, a);
+	for (int i = 0; i < 100; i++)
+		printf("%d\t", a[i]);
+	QuickSort(&L1);       //快速排序的调用函数
+	printf("\n\n\n快速排序：\n");
+	for (int i = 0; i < 100; i++)
+		printf("%d\t", L1.D[i].data);
+
+
+	printf("\n\n\n重新复制值：\n");
+	RepeatRand(&L1, a);
+	for (int i = 0; i < 100; i++)
+		printf("%d\t", a[i]);
+	MergeSort(&L1);      //两路合并排序
+	printf("\n\n\n两路合并排序：\n");
+	for (int i = 0; i < 100; i++)
+		printf("%d\t", L1.D[i].data);
+
+
+	printf("\n\n\n重新复制值：\n");
+	RepeatRand(&L1, a);
+	for (int i = 0; i < 100; i++)
+		printf("%d\t", a[i]);
+	HeapSort(&L1);       //堆排序
+	printf("\n\n\n堆排序：\n");
+	for (int i = 0; i < 100; i++)
+		printf("%d\t", L1.D[i].data);
+
+
+	system("pause");
+	return 0;
 }
