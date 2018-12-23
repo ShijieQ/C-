@@ -69,10 +69,10 @@ Status Exist(lGraph *lg, int u, int v){
         p = p->nextArc;
     }
     if(!p){
-        return ERROR;
+        return INF;
     }
     else{
-        return OK;
+        return p->w;
     }
 }
 
@@ -80,7 +80,7 @@ Status Insert(lGraph *lg, int u, int v, ElemType w){
     if(u < 0 || v < 0 || u > lg->n-1 || v > lg->n-1 || u == v){
         return ERROR;
     }
-    if(Exist(lg, u, v))
+    if(Exist(lg, u, v) != INF)
         return Duplicate;
     eNode *p = (eNode *)malloc(sizeof(eNode));
     p->adjVex = v;
@@ -175,39 +175,45 @@ void GraphBFS(lGraph lg){
     return ;
 }
 
-int ans_value = INF;
-void minValueDFS(lGraph lg, int k, int Value, int aim, string route){
-    vis[k] = 1;
-    if(k == aim){
-        int len = route.length();
-        cout<<int(route[0]);
-        for(int i = 1; i < len; i++){
-            cout<<"->"<<int(route[i]);
+void SearchShortPath(lGraph lg, int start){
+    bool p[maxn][maxn];
+    int D[maxn];
+    for (int v = 0; v < lg.n; v++){
+        vis[v] = 0; 
+        D[v] = Exist(&lg, start, v);
+        for (int w = 0; w < lg.n; w++){
+            p[v][w] = 0;
         }
-        cout<<" Value = "<<Value<<endl;
-        return ;
-    }
-    eNode *p = lg.a[k];
-    while(p){
-        if(!vis[p->adjVex]){
-            minValueDFS(lg, p->adjVex, Value+p->w, aim, route+char(p->adjVex));
+        if (D[v] < INF) {
+            p[v][start] = 1; 
+            p[v][v] = 1;
         }
-        p = p->nextArc;
     }
-}
-
-void Find(lGraph lg, int l, int r){
-    memset(vis, 0, sizeof(vis));
-    string route = "" + char(l);
-    cout<<int(route[0])<<endl;
-    eNode *p = lg.a[l];
-    while(p){
-        if(!vis[p->adjVex]){
-            minValueDFS(lg, p->adjVex, p->w, r, route+char(p->adjVex));
+    D[start] = 0; 
+    vis[start] = 0;
+    for (int i = 1; i < lg.n; i++){
+        int minn = INF;
+        int v;
+        for (int w = 0; w < lg.n; w++){
+            if (!vis[w]){
+                if (D[w] < minn) {
+                    v = w; 
+                    minn = D[w];
+                }
+            }
         }
-        p = p->nextArc;
+        vis[v] = 1;
+        for (int w = 0; w < lg.n; w++){
+            int temp = Exist(&lg, v, w);
+            if (!vis[w] && (minn + temp < D[w])){
+                D[w] = minn + temp;
+                p[w][w] = 1;
+            }
+        }
     }
-    return ;
+    for(int i = 0; i < lg.n; i++){
+        cout<<"D["<<i<<"] = "<<D[i]<<endl;
+    }
 }
 
 int main(){
@@ -229,9 +235,9 @@ int main(){
     GraphDFS(lg);
     cout<<"The route of BFS is :"<<endl;
     GraphBFS(lg);
-    cout<<"Please input the node of starting and ending :";
-    int l, r;
-    cin>>l>>r;
-    Find(lg, l, r);
+    cout<<"Please input the node of starting:";
+    int l;
+    cin>>l;
+    SearchShortPath(lg, l);
     return 0;
 }
