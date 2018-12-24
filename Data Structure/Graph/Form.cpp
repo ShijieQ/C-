@@ -190,16 +190,13 @@ void SearchShortPath(lGraph lg, int start){
         }
     }
     D[start] = 0; 
-    vis[start] = 0;
     for (int i = 1; i < lg.n; i++){
         int minn = INF;
         int v;
         for (int w = 0; w < lg.n; w++){
-            if (!vis[w]){
-                if (D[w] < minn) {
-                    v = w; 
-                    minn = D[w];
-                }
+            if (!vis[w] && D[w] < minn){
+                v = w; 
+                minn = D[w];
             }
         }
         vis[v] = 1;
@@ -212,7 +209,10 @@ void SearchShortPath(lGraph lg, int start){
         }
     }
     for(int i = 0; i < lg.n; i++){
-        cout<<"D["<<i<<"] = "<<D[i]<<endl;
+        if(D[i] != INF)
+            cout<<"D["<<i<<"] = "<<D[i]<<endl;
+        else
+            cout<<"D["<<i<<"] = INF"<<endl;
     }
 }
 
@@ -241,3 +241,16 @@ int main(){
     SearchShortPath(lg, l);
     return 0;
 }
+/*
+0 1 50
+0 2 10
+0 4 80
+1 4 20
+1 2 15
+2 3 15
+3 4 45
+3 1 20
+4 3 45
+5 4 10
+5 3 9
+*/
