@@ -208,10 +208,6 @@ long HeapSort() {
 	return end - begin;
 }
 
-bool cmp(Entry a, Entry b){
-    return a.key < b.key;
-}
-
 int main() {
 	clock_t be = clock();
 	Init(100000);
