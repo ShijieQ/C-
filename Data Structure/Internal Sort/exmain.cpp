@@ -34,7 +34,7 @@ void Init(int k) {
 	for (int i = 0; i < k; i++) {
 		l.D[i].key = int(rand());
 		l_temp.D[i].key = l.D[i].key;
-		printf("%d\n", l.D[i].key);
+		cout<<l.D[i].key<<endl;
 	}
 	fclose(stdout);
 }
@@ -219,7 +219,7 @@ int main() {
 	freopen("main.out", "w", stdout);
 	cout << "After Init is :" << endl;
 	cout << "time used : " << ed - be << "ms" << endl;
-	cout << "Initial data is :" << endl;
+//	cout << "Initial data is :" << endl;
 //	Result();
 	cout << "After SelectSort is :" << endl;
 	cout << "time used : " << SelectSort() << "ms" << endl;
@@ -244,12 +244,6 @@ int main() {
 	cout << "After HeapSort is :" << endl;
 	cout << "time used : " << HeapSort() << "ms" << endl;
 //	Result();
-	Reversion();
-    cout << "After Sort is :" << endl;
-    clock_t begin = clock();
-    sort(l.D, l.D + l.n, cmp);
-    clock_t end = clock();
-	cout << "time used : " << end - begin << "ms" << endl;
 	return 0;
 }
 
