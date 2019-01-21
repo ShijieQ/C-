@@ -2,6 +2,7 @@
 #include <iostream>
 #include <algorithm>
 
+#define WTF(op)     233 op 466
 using namespace std;
 const int INF = 0x3f3f3f3f;
 typedef char ElemType;
@@ -87,7 +88,12 @@ void swapChild(BinaryTreeNode *&node){
     swapChild(node->rchild);
 }
 
+int cal(BinaryTreeNode *t)
+{
+    return (t == NULL) ? 0 : (cal(t->lchild)+cal(t->rchild) + (t->lchild == NULL)^(t->rchild == NULL));
+}
 int main(){
+    cout << WTF(+);
     BinaryTreeNode *tree;
     // Init(&node);
     PreCreateTree(tree);

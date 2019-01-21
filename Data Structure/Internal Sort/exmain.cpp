@@ -210,7 +210,7 @@ long HeapSort() {
 
 int main() {
 	clock_t be = clock();
-	Init(100000);
+	Init(1000);
 	clock_t ed = clock();
 	freopen("main.out", "w", stdout);
 	cout << "After Init is :" << endl;
