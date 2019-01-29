@@ -41,6 +41,6 @@ int main(){
         ans += (p[i].pain - k)*p[i].spend;
     }
     cout<<ans<<endl;
-    //system("pause");
+    system("pause");
     return 0;
 }

@@ -10,12 +10,12 @@ const int INF = 30000;
 int main(){
     //int T = maxn;
     srand((int)time(NULL));
-   // while(T--){
-        int t = 1 + rand()%200;
+    //while(T--){
+        int t = 1 + rand()%30;
         cout<<t<<endl;
         while(t--){
-            cout<< 1000*(rand()%10000) <<" " <<1000*(rand()%10000) <<endl;
+            cout<< (rand()%50) + 2 <<" " <<(rand()%30) + 1 <<endl;
         }
-    // }
-    system("pause");
+    //}
+    //system("pause");
 }

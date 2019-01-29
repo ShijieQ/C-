@@ -3,7 +3,7 @@
 using namespace std;
 int main()
 {
-	int t=100;
+	int t=10;
 	while(--t)
         {
 		system("rand.exe > data.txt");
