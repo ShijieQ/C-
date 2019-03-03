@@ -1,3 +1,4 @@
+//http://codeforces.com/problemset/problem/498/A
 #include<map>
 #include<cmath>
 #include<queue>
@@ -22,7 +23,7 @@ int main(){
     for(int i = 1; i <= n; i++){
         long long int a, b, c;
         cin>>a>>b>>c;
-        if((-a*x1 - c)*(-a*x2 - c) < 0){
+        if((a*x1 + b*y1 + c > 0 && a*x2 + b*y2 + c < 0) || (a*x1 + b*y1 + c < 0 && a*x2 + b*y2 + c > 0)){
             cnt++;
         }
     }
