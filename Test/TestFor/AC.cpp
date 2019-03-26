@@ -1,113 +1,103 @@
+/*
+POJ 1845 Sumdiv
+求A^B的所有约数之和%9901
+
+*/
+#include<stdio.h>
+#include<math.h>
 #include<iostream>
-#include<cstdio>
-#include<cstring>
+#include<algorithm>
+#include<string.h>
 using namespace std;
-bool qipan[11][11];
-char q[11][11];
+
+#define MOD 9901
+
+//******************************************
+//素数筛选和合数分解
+const int MAXN=10000;
+int prime[MAXN+1];
+void getPrime()
+{
+    memset(prime,0,sizeof(prime));
+    for(int i=2;i<=MAXN;i++)
+    {
+        if(!prime[i])prime[++prime[0]]=i;
+        for(int j=1;j<=prime[0]&&prime[j]<=MAXN/i;j++)
+        {
+            prime[prime[j]*i]=1;
+            if(i%prime[j]==0) break;
+        }
+    }
+}
+long long factor[100][2];
+int fatCnt;
+int getFactors(long long x)
+{
+    fatCnt=0;
+    long long tmp=x;
+    for(int i=1;prime[i]<=tmp/prime[i];i++)
+    {
+        factor[fatCnt][1]=0;
+        if(tmp%prime[i]==0)
+        {
+            factor[fatCnt][0]=prime[i];
+            while(tmp%prime[i]==0)
+            {
+                factor[fatCnt][1]++;
+                tmp/=prime[i];
+            }
+            fatCnt++;
+        }
+    }
+    if(tmp!=1)
+    {
+        factor[fatCnt][0]=tmp;
+        factor[fatCnt++][1]=1;
+    }
+    return fatCnt;
+}
+
+//******************************************
+long long pow_m(long long a,long long n)//快速模幂运算
+{
+    long long res=1;
+    long long tmp=a%MOD;
+    while(n)
+    {
+        if(n&1){res*=tmp;res%=MOD;}
+        n>>=1;
+        tmp*=tmp;
+        tmp%=MOD;
+    }
+    return res;
+}
+long long sum(long long p,long long n)//计算1+p+p^2+````+p^n
+{
+    if(p==0)return 0;
+    if(n==0)return 1;
+    if(n&1)//奇数
+    {
+        return ((1+pow_m(p,n/2+1))%MOD*sum(p,n/2)%MOD)%MOD;
+    }
+    else return ((1+pow_m(p,n/2+1))%MOD*sum(p,n/2-1)+pow_m(p,n/2)%MOD)%MOD;
+
+}
 int main()
 {
-    int n,x,y;
-    while(scanf("%d %d %d",&n,&x,&y)&&(x!=0||y!=0||n!=0))
+    //freopen("in.txt","r",stdin);
+    //freopen("out.txt","w",stdout);
+    int A,B;
+    getPrime();
+    while(scanf("%d%d",&A,&B)!=EOF)
     {
-        for(int i=0;i<11;i++)
-            for(int j=0;j<11;j++)
-            {
-                qipan[i][j]=false;
-                q[i][j]='\0';
-            }
-        for(int i=0;i<3;i++)
-            for(int j=0;j<3;j++)
-                qipan[1+i][4+j]=true;
-        for(int i=0;i<n;i++)
+        getFactors(A);
+        long long ans=1;
+        for(int i=0;i<fatCnt;i++)
         {
-            char a[2];
-            int x1,y1;
-            scanf("%s %d %d",a,&x1,&y1);
-            q[x1][y1]=a[0];
+            ans*=(sum(factor[i][0],B*factor[i][1])%MOD);
+            ans%=MOD;
         }
-        for(int i=1;i<11;i++)
-            for(int j=1;j<11;j++)
-            {
-                if(q[i][j]=='\0')
-                    continue;
-                else if(q[i][j]=='G')
-                {
-                    int o;
-                    for(o=i-1;o>0&&q[o][j]=='\0';o--)
-                        qipan[o][j]=false;
-                    if(o>0)
-                        qipan[o][j]=false;
-                }
-                else if(q[i][j]=='R')
-                {
-                    int o;
-                    for(o=i-1;o>0&&q[o][j]=='\0';o--)
-                        qipan[o][j]=false;
-                    if(o>0)
-                        qipan[o][j]=false;
-                    for(o=i+1;o<11&&q[o][j]=='\0';o++)
-                        qipan[o][j]=false;
-                    if(o<11)
-                        qipan[o][j]=false;
-                    for(o=j-1;o>0&&q[i][o]=='\0';o--)
-                        qipan[i][o]=false;
-                    if(o>0)
-                        qipan[i][o]=false;
-                    for(o=j+1;o<11&&q[i][o]=='\0';o++)
-                        qipan[i][o]=false;
-                    if(o<11)
-                        qipan[i][o]=false;
-                }
-                else if(q[i][j]=='C')
-                {
-                    int o;
-                    for(o=i-1;o>0&&q[o][j]=='\0';o--);
-                    o--;
-                    for(;o>0&&q[o][j]=='\0';o--)
-                        qipan[o][j]=false;
-                    if(o>0)
-                        qipan[o][j]=false;
-                    for(o=i+1;o<11&&q[o][j]=='\0';o++);
-                    o++;
-                    for(;o<11&&q[o][j]=='\0';o++)
-                        qipan[o][j]=false;
-                    if(o<11)
-                        qipan[o][j]=false;
-                    for(o=j-1;o>0&&q[i][o]=='\0';o--);
-                    o--;
-                    for(;o>0&&q[i][o]=='\0';o--)
-                        qipan[i][o]=false;
-                    if(o>0)
-                        qipan[i][o]=false;
-                    for(o=j+1;o<11&&q[i][o]=='\0';o++);
-                    o++;
-                    for(;o<11&&q[i][o]=='\0';o++)
-                        qipan[i][o]=false;
-                    if(o<11)
-                        qipan[i][o]=false;
-                }
-                else if(q[i][j]=='H')
-                {
-                    if(i>2&&q[i-1][j]=='\0')
-                        qipan[i-2][j-1]=qipan[i-2][j+1]=false;
-                    if(i<9&&q[i+1][j]=='\0')
-                        qipan[i+2][j-1]=qipan[i+2][j+1]=false;
-                    if(j>2&&q[i][j-1]=='\0')
-                        qipan[i-1][j-2]=qipan[i+1][j-2]=false;
-                    if(j<9&&q[i][j+1]=='\0')
-                        qipan[i-1][j+2]=qipan[i+1][j+2]=false;
-                }
-            }
-        bool jud=false;
-        for(int i=x+1;i<11&&(q[i][y]=='\0'||q[i][y]=='G');i++)
-            if(q[i][y]=='G')
-            {
-                jud=true;
-                break;
-            }
-        if(qipan[x-1][y]||qipan[x+1][y]||qipan[x][y-1]||qipan[x][y+1]||jud)
-            printf("NO\n");
-        else
-            printf("YES\n");
+        printf("%I64d\n",ans);
     }
+    return 0;
 }
