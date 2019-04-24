@@ -22,10 +22,12 @@
                     "${workspaceRoot}",
                     "C:/MinGW/lib/gcc/mingw32/6.3.0/include",
                     "C:/MinGW/include"
-                ]
+                ],
+                "limitSymbolsToIncludedHeaders": true,
+                "databaseFilename": ""
             },
-            "limitSymbolsToIncludedHeaders": true,
-            "databaseFilename": ""
+            "cStandard": "c11",
+            "cppStandard": "c++17"
         }
     ],
     "version": 4

@@ -1,85 +1,49 @@
 #include <iostream>
+#include <cstdio>
+#include <cmath>
+#include <vector>
+#include <cstring>
+#include <algorithm>
+#include <string>
+#include <set>
+#include <functional>
+#include <numeric>
+#include <sstream>
+#include <stack>
+#include <map>
+#include <queue>
+#include<iomanip>
 using namespace std;
-
-int nums[9][9];
-bool flag=false;
-
-bool check(int n,int key)
-{
-    for(int i=0;i<9;i++)
-    {
-
-        int j=n/9;
-        if(nums[j][i]==key) return false;
-    }
-    for(int i=0;i<9;i++)
-    {
-        int j=n%9;
-        if(nums[i][j]==key) return false;
-    }
-
-    int x=n/9/3*3;
-    int y=n%9/3*3;
-
-    for(int i=x;i<x+3;i++)
-    {
-        for(int j=y;j<y+3;j++)
-        {
-            if(nums[i][j]==key) return false;
-        }
-    }
-    return true;
-}
-
-void dfs(int n)
-{
-    if(n>80)
-    {
-        flag = true;
-        return ;
-    }
-
-    if(nums[n/9][n%9]!=0)
-    {
-        dfs(n+1);
-    }
-    else
-    {
-        for(int i=1;i<=9;i++)
-        {
-            if(check(n,i)==true)
-            {
-                nums[n/9][n%9]=i;
-                dfs(n+1);
-                if(flag==true) return ;
-                nums[n/9][n%9] = 0;
-
-            }
-        }
-    }
-    return ;
-}
-
-
+int dp[2005][2005];
 int main()
 {
-    freopen("in.in", "r", stdin);
-    freopen("out1.out", "w", stdout);
-    for(int i=0;i<9;i++)
+    string a,b,c;
+    while(cin >> a)
     {
-        for(int j=0;j<9;j++)
+        cin >> b >> c;
+        if(a.size() + b.size() != c.size())  //注意判断长度
         {
-            cin>>nums[i][j];
+            cout << "No\n";
+            continue;
         }
-    }
-    dfs(0);
-    for(int i=0;i<9;i++)
-    {
-        for(int j=0;j<9;j++)
+        memset(dp,0,sizeof(dp));
+        dp[0][0] = 1;
+        for (int i = 0; i <= a.size(); i++)  //a的数量
         {
-            cout<<nums[i][j]<<" ";
-            if(j==8) cout<<endl;
+            for (int j = 0; j <= b.size(); j++)  //b的数量
+            {
+                if (c[i + j] == a[i])
+                {
+                    dp[i + 1][j] |= dp[i][j];
+                }
+                if (c[i + j] == b[j])
+                {
+                    dp[i][j + 1] |= dp[i][j];
+                }
+            }
         }
+        if (dp[a.size()][b.size()])cout << "Yes" << endl;
+        else cout << "No\n";
     }
-
+    return 0;
 }
