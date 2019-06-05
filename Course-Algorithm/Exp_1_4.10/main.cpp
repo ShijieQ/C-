@@ -113,35 +113,17 @@ long MergeSort(){
     return end - begin;
 }
 
-void AdjustDown(int b, int r){
-    Entry temp = l.D[b];
-    for(int j = 2*b+1; j <= r; j = j*2+1){
-        if(j < r && l.D[j].key < l.D[j+1].key){
-            j++;
-        }
-        if(temp.key > l.D[j].key){
-            break;
-        }
-        l.D[b] = l.D[j];
-        b = j;
-    }
-    l.D[b] = temp;
-}
-
 int main(){
     clock_t be = clock();
-    Init(10000000);
+    Init(100000);
     clock_t ed = clock();
     freopen("data.out", "w", stdout);
     cout<<"After Init :"<<endl;
     cout<<"time used : "<<ed - be<<"ms"<<endl;
-    // Result();
     cout<<"After QuickSort :"<<endl;
     cout<<"time used : "<<QuickSort(0, l.n-1)<<"ms"<<endl;
-    // Result();
     Reversion();
     cout<<"After MergeSort :"<<endl;
     cout<<"time used : "<<MergeSort()<<"ms"<<endl;
-    // Result();
     return 0;
 }

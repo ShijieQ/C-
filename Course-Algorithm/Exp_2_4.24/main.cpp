@@ -1,13 +1,4 @@
-#include<map>
-#include<set>
-#include<cmath>
-#include<queue>
-#include<stack>
-#include<cstdio>
-#include<vector>
-#include<cstring>
-#include<iostream>
-#include<algorithm>
+#include<bits/stdc++.h>
 
 using namespace std;
 
