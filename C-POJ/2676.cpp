@@ -15,7 +15,6 @@ const int maxn = 10;
 int mp[maxn][maxn];
 vector<pair<int, int> > vec;
 int siz = 0;
-// int test = 0;
 
 void read(){
     vec.clear();
@@ -34,9 +33,6 @@ void read(){
 bool check(int k, int x, int y){
     for(int i = 1; i <= 9; i++){
         if(mp[x][i] == k || mp[i][y] == k){
-            // if(x == 3 && y == 4){
-            //     cout<<"k = "<<k<<endl;
-            // }
             return 0;
         }
     }
@@ -61,22 +57,16 @@ void output(){
 }
 
 bool solve(int num){
-    // test++;
     if(num == siz){
         return 1;
     }
     int i = vec[num].first, j = vec[num].second;
     for(int k = 1; k <= 9; k++){
         if(check(k, i, j)){
-            // cout<<"num = "<<num<<" i = "<<i<<" j = "<<j<<" k = "<<k<<endl;
             mp[i][j] = k;
             if(solve(num + 1) == 1){
-                // cout<<"check"<<endl;
                 return 1;
             }
-                // if(i == 3 && j == 4){
-                //     cout<<"check"<<endl;
-                // }
             mp[i][j] = 0;
         }
     }
@@ -91,11 +81,8 @@ int main(){
     // freopen("in.in", "r", stdin);
     // freopen("out.out", "w", stdout);
     read();
-    //cout<<"siz = "<<siz<<endl;
     solve(0);
-    //cout<<vec[12].first<<" "<<vec[12].second<<endl;
     output();
-    //cout<<"test = "<<test<<endl;
     }
     return 0;
 }
