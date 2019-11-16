@@ -74,16 +74,11 @@ bool solve(int num){
 }
 
 int main(){
-    int n;
-    scanf("%d", &n);
-    getchar();
-    while(n--){
     // freopen("in.in", "r", stdin);
     // freopen("out.out", "w", stdout);
     read();
     solve(0);
     output();
-    }
     return 0;
 }
 /*

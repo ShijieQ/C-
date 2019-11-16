@@ -1,0 +1,7 @@
+main()
+{
+int  a,b;
+a = 10;
+// note
+   b = a + 20;
+}

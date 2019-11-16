@@ -123,7 +123,7 @@ status Reverse(headerList *L){
     L->head->link = p;
     return OK;
 }
-
+// qishijie
 int main(){
     ElemType x;
     headerList L;
@@ -136,6 +136,7 @@ int main(){
         cin>>tem1;
         Insert(&L, i-1, tem1);
     }
+    //qishijie
     cout<<"The headerlist is: "<<endl;
     Output(L);
     Delete(&L, 0);
