@@ -9,33 +9,33 @@ int main()
 	cin>>n>>k;
 	cin>>s;
 	for(i=0;i<s.size();i++)
-		w[s[i]-'a'+1]=1;	    //±£´æ×Ö·û 
-	for(i=1;i<=26;i++)		    //ÕÒµ½¼¯ºÏÖÐ×îÐ¡×Ö·û£¬lÎªÆäASCIIÂë 
+		w[s[i]-'a'+1]=1;	    //ä¿å­˜å­—ç¬¦ 
+	for(i=1;i<=26;i++)		    //æ‰¾åˆ°é›†åˆä¸­æœ€å°å­—ç¬¦ï¼Œlä¸ºå…¶ASCIIç  
 		if(w[i]==1){
 			l=i+'a'-1;
 			break;
 		}
-	for(i=26;i>=1;i--)		    //ÕÒµ½¼¯ºÏÖÐ×î´ó×Ö·û£¬rÎªÆäASCIIÂë 
+	for(i=26;i>=1;i--)		    //æ‰¾åˆ°é›†åˆä¸­æœ€å¤§å­—ç¬¦ï¼Œrä¸ºå…¶ASCIIç  
 		if(w[i]==1){
 			r=i+'a'-1;
 			break;
 		}
-	if(k>n){			    //µÚÒ»ÖÖÇé¿ö 
+	if(k>n){			    //ç¬¬ä¸€ç§æƒ…å†µ 
 		cout<<s;   
 		for(i=1;i<=k-n;i++)
 			cout<<char(l);
 		return 0;
 	}
 	for(i=k-1;i>=0;i--){
-		if(r>s[i]){		    //Èç¹ûÓÐr´óÓÚs[i]£¬ÄÇÃ´¼¯ºÏÖÐ¿Ï¶¨ÓÐ×Ö·û´óÓÚs[i] 
-			cout<<s.substr(0,i);//Êä³öÇ°Ãæ 
+		if(r>s[i]){		    //å¦‚æžœæœ‰rå¤§äºŽs[i]ï¼Œé‚£ä¹ˆé›†åˆä¸­è‚¯å®šæœ‰å­—ç¬¦å¤§äºŽs[i] 
+			cout<<s.substr(0,i);//è¾“å‡ºå‰é¢ 
 			for(j=s[i]-'a'+2;j<=26;j++){
-				if(w[j]){    //ÕÒµ½µÚÒ»¸ö´óÓÚs[i]£¬µÄ×Ö·ûÊä³ö 
+				if(w[j]){    //æ‰¾åˆ°ç¬¬ä¸€ä¸ªå¤§äºŽs[i]ï¼Œçš„å­—ç¬¦è¾“å‡º 
 					cout<<char(j+'a'-1);
 					break;
 				}
 			}
-			for(j=i+1;j<k;j++)    //Êä³öºóÃæ 
+			for(j=i+1;j<k;j++)    //è¾“å‡ºåŽé¢ 
 				cout<<char(l);
 			return 0;
 		}

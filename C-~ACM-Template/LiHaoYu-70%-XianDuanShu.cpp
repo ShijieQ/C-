@@ -19,7 +19,7 @@ void make(int l,int r,int k){
         t[k].left=t[k].right=l;
         t[k].maxx=t[k].minn=t[k].sum=num[l];
         return;
-    }
+    }                       
     t[k].left=l;
     t[k].right=r;
     make(l,(l+r)>>1,k<<1);

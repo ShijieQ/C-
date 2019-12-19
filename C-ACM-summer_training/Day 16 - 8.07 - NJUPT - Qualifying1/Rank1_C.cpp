@@ -4,7 +4,7 @@
 using namespace std;
 
 long long area(long long int x1, long long int y1, long long int x2, long long int y2, long long int x3, long long int y3){
-	long long int tem = x1*y2-x1*y3+x2*y3-x2*y1+x3*y1-x3*y2; //¸ù¾İÈıµã×ø±êÇóÃæ»ı¹«Ê½£¬ÎÒ²ğ¿ªÁË¡£ 
+	long long int tem = x1*y2-x1*y3+x2*y3-x2*y1+x3*y1-x3*y2; //æ ¹æ®ä¸‰ç‚¹åæ ‡æ±‚é¢ç§¯å…¬å¼ï¼Œæˆ‘æ‹†å¼€äº†ã€‚ 
 	if(tem < 0)
 		tem = -tem;
 	return tem;

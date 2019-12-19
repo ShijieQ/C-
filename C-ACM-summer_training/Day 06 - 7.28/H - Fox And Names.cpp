@@ -24,7 +24,7 @@ void dfs(int k){
 	}
 	if(flag)
 		return;
-	vis[k] = -1;//±íÊ¾char(k+'a')Ö®ºóÎŞÒªÇó
+	vis[k] = -1;//è¡¨ç¤ºchar(k+'a')ä¹‹åæ— è¦æ±‚
 	s.push(k);
 }
 

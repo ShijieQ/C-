@@ -34,8 +34,8 @@ string toString(char ch1) {
 }
 
 void removeNote() {
-    freopen("data.in", "r", stdin);
-    freopen("temp.out", "w", stdout);
+    //freopen("data.in", "r", stdin);
+    //freopen("temp.out", "w", stdout);
     char ch = getchar();
     while (ch != EOF) {
         if (ch == '/') {
