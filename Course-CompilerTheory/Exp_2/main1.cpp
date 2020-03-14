@@ -1,15 +1,15 @@
 #include<bits/stdc++.h>
 
 using namespace std;
-string *grammar;  //ÎÄ·¨G
-string *grammarSet;  //²úÉúÊ½¼¯ºÏP
-string Vn, Vt;                 //ÎÄ·¨G·ÇÖÕ½á·û¼¯ºÏU£¬ÖÕ½á·û¼¯ºÏu
-int numOfVn, numOfVt, numOfG;                 //·ÇÖÕ½á·û¡¢ÖÕ½á·û¸öÊı,²úÉúÊ½Êı
-string *grammarAfter; //Ïû³ı×óµİ¹éºóµÄÎÄ·¨GG
-string *grammarSetAfter; //ÎÄ·¨GGµÄ²úÉúÊ½¼¯ºÏPP
-string VnAfter, VtAfter;               //ÎÄ·¨GG·ÇÖÕ½á·û¼¯ºÏU£¬ÖÕ½á·û¼¯ºÏu
-int numOfVnAfter, numOfVtAfter, numOfGAfter;              //Ïû³ı×óµİ¹éºóµÄ·ÇÖÕ½á·û¡¢ÖÕ½á·û¸öÊı,²úÉúÊ½Êı
-string **table;              //·ÖÎö±í
+string *grammar;  //æ–‡æ³•G
+string *grammarSet;  //äº§ç”Ÿå¼é›†åˆ
+string Vn, Vt;                 //æ–‡æ³•éç»ˆç»“ç¬¦é›†åˆã€ç»ˆç»“ç¬¦é›†åˆ
+int numOfVn, numOfVt, numOfG;     //éç»ˆç»“ç¬¦ã€ç»ˆç»“ç¬¦ä¸ªæ•°,äº§ç”Ÿå¼æ•°
+string *grammarAfter; //æ¶ˆé™¤å·¦é€’å½’åçš„æ–°æ–‡æ³•
+string *grammarSetAfter; //æ–°æ–‡æ³•çš„äº§ç”Ÿå¼é›†åˆPP
+string VnAfter, VtAfter; //æ–°æ–‡æ³•çš„éç»ˆç»“ç¬¦é›†åˆã€ç»ˆç»“ç¬¦é›†åˆ
+int numOfVnAfter, numOfVtAfter, numOfGAfter;      //æ¶ˆé™¤å·¦é€’å½’åçš„éç»ˆç»“ç¬¦ã€ç»ˆç»“ç¬¦ä¸ªæ•°ã€äº§ç”Ÿå¼æ•°
+string **table;              //åˆ†æè¡¨
 
 void init() {
     grammar = new string[50];
@@ -160,7 +160,7 @@ int remove() {
             grammarAfter[m].append(1, C);
             grammarAfter[m].append("|^");
             m++, C++;
-        } //A::=A¦Á|¦Â¸ÄĞ´³ÉA::=¦ÂA¡®£¬A¡¯=¦ÁA'|¦Â£¬
+        } //A::=AÎ±|Î²æ”¹å†™æˆA::=Î²Aâ€˜ï¼ŒAâ€™=Î±A'|Î²ï¼Œ
     }
     return hasLeftRecursion;
 }
@@ -272,7 +272,7 @@ string **getTable(string *first) {
     for (int i = 0; i < numOfGAfter; i++) {
         string arfa = grammarSetAfter[i];
         arfa.erase(0, 4);
-        string fir = FIRST(first, arfa);
+        string fir = getFIRST(first, arfa);
         for (int j = 0; j < numOfVtAfter; j++) {
             p = VnAfter.find(grammarSetAfter[i][0]);
             if (fir.find(VtAfter[j]) != string::npos) {
@@ -299,7 +299,7 @@ void analyse(string s) {
     string sBefore = s;
     char top, next;
     int flag = 0;
-    int i = 0, j = 0, step = 1; //·ûºÅÕ»¼ÆÊı¡¢ÊäÈë´®¼ÆÊı¡¢²½ÖèÊı
+    int i = 0, j = 0, step = 1; //ç¬¦å·æ ˆè®¡æ•°ã€è¾“å…¥ä¸²è®¡æ•°ã€æ­¥éª¤æ•°
     
     for (i = 0; !s[i]; i++) {
         if (VtAfter.find(s[i]) == string::npos)
@@ -384,6 +384,7 @@ int main() {
     cout<<"\n\nVt :";
     for (i = 0; i < numOfVt; i++)
         cout << Vt[i];
+    cout << "\n\n                          å·¦é€’å½’æ£€æµ‹ä¸æ¶ˆé™¤\n\n";
     if (remove()) {
         anotherPreWork();
         cout<<"It has Left recursion.\n\nAfter dealing:\n\n";
@@ -418,8 +419,8 @@ int main() {
     cout<<"\n\nFollow Set:"<<endl;
     for (i = 0; i < numOfVnAfter; i++)
         cout << "FOLLOW(" << VnAfter[i] << "):   " << FOLLOW[i] << endl;
-	cout<<"\n\n                          Analyse table\n\n";
-    table = create_table(first);
+    cout << "\n\n                          æ„é€ æ–‡æ³•åˆ†æè¡¨\n\n";
+    table = getTable(first);
     cout << "     ";
     for (i = 0; i < numOfVtAfter; i++)
         cout << "   " << VtAfter[i] << "      ";
@@ -430,6 +431,7 @@ int main() {
             cout << table[i][j];
         cout << endl;
     }
+    cout<<"\n\n                          Analyse table\n\n";
     string s;
     cout<<"\n\nPlease input string:";
     cin >> s;

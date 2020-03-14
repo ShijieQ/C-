@@ -4,7 +4,7 @@
 #include <string.h>
 #include <unistd.h>
 #include <sys/types.h>
-#include <linux/shm.h>
+#include <sys/shm.h>
 
 int main() {
     int shmid;     /*共享内存的内部标识*/
