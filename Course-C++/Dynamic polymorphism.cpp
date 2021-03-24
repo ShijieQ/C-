@@ -39,7 +39,7 @@ int main()
 {
 	shape *p;
 	double  r,h;
-	cout<<"input r & h£º"<<endl;
+	cout<<"input r & h??"<<endl;
 	cin>>r>>h;
 	cylinder cy(r,h);
 	sphere sp(r);

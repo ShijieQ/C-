@@ -1,3 +1,10 @@
+#define Online
+
+#ifndef Online
+    freopen("in.in", "r", stdin);
+    freopen("out.out", "w", stdout);
+#endif
+
 inline long long read(){
     long long int x = 0, t = 1, c;
     while(!isdigit(c = getchar())){ 

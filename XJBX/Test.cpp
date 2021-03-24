@@ -1,20 +1,26 @@
-#include<iostream>
+#include <iostream>
 using namespace std;
 
-int main()
-{
-    int n;
-    char* c = new char[51];
-    cin >> n >> c;
-    
-    for (int i = 0; c[i] != '\0'; i++)
-    {
-        c[i] += n % 26;
-        if (c[i] > 'z')
-        {
-            c[i] -= 26;
-        }
+class A {
+public:
+    void print() {
+        cout << "This is A." << endl;
     }
-    cout << c;
+};
+
+class B: public A {
+public:
+    void print() {
+        cout << "This is B." << endl;
+    }
+};
+
+int main() {
+    A a;
+    B b;
+    A *p1 = &a;
+    B *p2 = &b;
+    p1->print();
+    p2->print();
     return 0;
 }
